@@ -2,8 +2,10 @@ Page({
     data: {
         ssid: '',
         password: '',
+        udp: '',
+        port: 0,
         showClearBtn: false,
-        isWaring: false,
+        isFirst: true,
     },
     onLoad(opt) {
         let that = this
@@ -76,10 +78,42 @@ Page({
     },
     onConfirm() {
         console.log("ssid:", this.data.ssid, ",password:", this.data.password)
-        if (this.data.password.length < 8) {
+        if (this.data.isFirst) {
+            let udp = wx.createUDPSocket();
             this.setData({
-                isWaring: true,
+                isFirst: false,
+                udp,
+                port: udp.bind(),
             });
         }
+
+        const password = this.data.password;
+        const ssid = this.data.ssid;
+        const port = this.data.port;
+
+        let message = JSON.stringify({
+            port,
+            password,
+            ssid
+        })
+
+        this.data.udp.send({
+            address: '192.168.4.1',
+            port: 1000,
+            message
+        });
+
+
+        this.data.udp.onMessage((res) => {
+            //字符串转换，很重要
+            let unit8Arr = new Uint8Array(res.message);
+            let encodedString = String.fromCharCode.apply(null, unit8Arr);
+            let data = decodeURIComponent(escape((encodedString)));
+            console.log("data:", data);
+        })
+
+        console.log("Msg:", message);
+        //AT+CIPSENDEX=0,5,"192.168.4.2",51180
+
     },
 });
