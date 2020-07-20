@@ -110,6 +110,27 @@ Page({
             let encodedString = String.fromCharCode.apply(null, unit8Arr);
             let data = decodeURIComponent(escape((encodedString)));
             console.log("data:", data);
+            let str = JSON.parse(data);
+            switch (str.code) {
+                //成功收到信息
+                case 0:
+                    wx.showToast({
+                        title: '接收成功',
+                    })
+                    break;
+                //成功解析到信息
+                case 1:
+                    wx.showToast({
+                        title: '准备连接路由器',
+                    })
+                    break;
+                //成功连接到路由器
+                case 2:
+                    wx.showToast({
+                        title: '成功连接',
+                    })
+                    break;
+            }
         })
 
         console.log("Msg:", message);
