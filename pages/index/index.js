@@ -130,11 +130,13 @@ Page({
                         title: '成功连接',
                     })
                     break;
+                //连接失败路由器
+                case 3:
+                    wx.showToast({
+                        title: '连接失败',
+                    })
+                    break;
             }
         })
-
-        console.log("Msg:", message);
-        //AT+CIPSENDEX=0,5,"192.168.4.2",51180
-
     },
 });
