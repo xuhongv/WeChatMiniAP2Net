@@ -51,4 +51,4 @@
 
 # 四 配置原理和过程
 
-![AP_Resource](png\AP_Resource.png)
+![AP_Resource](png/AP_Resource.png)
